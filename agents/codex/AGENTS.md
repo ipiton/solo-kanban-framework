@@ -1,0 +1,42 @@
+# Solo Kanban Agent Instructions
+
+Use these instructions as a starting point for repositories that adopt Solo Kanban.
+
+## Workflow
+
+- Read repository instructions before coding.
+- Read planning state before selecting or changing work.
+- Use `NEXT.md` as the source of truth for Queue and WIP.
+- Use `tasks/<slug>/` as the source of truth for active task scope.
+- Keep WIP at one primary task plus one urgent fix at most.
+- Do not work directly on the main integration branch unless explicitly asked.
+
+## Task Artifacts
+
+Expected active workspace:
+
+- `tasks/<slug>/requirements.md`
+- `tasks/<slug>/research.md` when research level requires it
+- `tasks/<slug>/Spec.md` for non-trivial non-docs tasks
+- `tasks/<slug>/tasks.md` before implementation
+
+Completed workspaces move to `tasks/archive/<slug>/`.
+
+## Before Implementation
+
+1. Confirm requirements, success criteria, non-goals, and constraints.
+2. Check whether research is required.
+3. Confirm or write the spec when the task changes runtime behavior, contracts, data, security, or integration boundaries.
+4. Create or update the implementation checklist.
+
+## Validation
+
+Run the strongest practical checks for changed code. Report skipped checks with reasons.
+
+## Final Response
+
+Summarize:
+
+- what changed;
+- how it was verified;
+- risks, skipped checks, or follow-ups.
