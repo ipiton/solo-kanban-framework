@@ -15,9 +15,11 @@ If these conflict, obey the more specific and safer instruction.
 
 1. Read local repository instructions.
 2. Read `NEXT.md` and the active task workspace.
-3. Read `requirements.md`, `research.md`, `Spec.md`, and `tasks.md` when they exist.
-4. Inspect current code before proposing changes.
-5. State assumptions when scope is ambiguous.
+3. Read `requirements.md` (including its **Risk Profile**), `research.md`, `Spec.md`, and `tasks.md` when they exist.
+4. Confirm the task's tier (`Lightweight` / `Standard` / `Full`) from the Risk Profile in `requirements.md`. The tier selects the required pipeline — see `docs/workflow.md` `Step Matrix`.
+5. Inspect current code before proposing changes.
+6. State assumptions when scope is ambiguous.
+7. If new risk signals appear mid-task (security implication, migration need, cross-domain reach), update the Risk Profile in `requirements.md` before continuing — the tier may escalate.
 
 ## During Work
 
@@ -65,7 +67,7 @@ Never present skipped tests as passing tests.
 
 Use `qa-check` for read-only Definition of Done verification. It should report status per item and avoid mutating planning state.
 
-Use `deep-review` when the diff is large, security-sensitive, pre-release, or spans several domains. Treat its output as review evidence: fix blocking findings, record non-blocking findings, and carry unresolved follow-ups into planning files during `finalize`.
+`deep-review` is **mandatory** when any `S` or any `M` signal is present, for any pre-release review, or when three or more risk signals apply. It is **discretionary** for large diffs (>~200 LOC) without `S` / `M`, for combined `C+X` signals, for novel patterns, or when the author has reasoned doubt. When discretionary, a skip must be recorded with a reason. Treat self-audit by the implementer as additive, not substitutive — for mandatory triggers, an independent perspective is required. Classify each finding by **severity** (`blocker | major | minor | nit`) and **disposition** (`fix-here | defer-bug | defer-tech-debt | defer-backlog | reject`). Record findings in `tasks/<slug>/review-findings.md`.
 
 ## Finalize Mode
 
@@ -78,10 +80,11 @@ Before finalizing a task:
 
 1. Confirm success criteria.
 2. Confirm checks and skipped-check reasons.
-3. Move follow-ups into `BUGS.md`, `TECH-DEBT.md`, or `BACKLOG.md`.
-4. Update documentation when behavior or process changed.
-5. Archive the task workspace.
-6. Add a compact `DONE.md` outcome.
+3. Confirm the deep-review gate when mandatory triggers apply: `tasks/<slug>/review-findings.md` exists, blockers are resolved, majors are resolved or explicitly deferred.
+4. Move follow-ups into `BUGS.md`, `TECH-DEBT.md`, or `BACKLOG.md`.
+5. Update documentation when behavior or process changed.
+6. Archive the task workspace (preserve `review-findings.md` in the archive when present).
+7. Add a compact `DONE.md` outcome.
 
 ## Stop Conditions
 

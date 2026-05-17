@@ -18,6 +18,19 @@ updated_at: <YYYY-MM-DD>
 - **Why Now:** <why this matters now>
 - **How We Measure:** <specific check or success metric>
 
+## Risk Profile
+
+<!-- See docs/workflow.md `Step Matrix` for signal definitions and tier rules. -->
+
+- **Signals:** `<space-separated subset of C S M X R, or "none">`
+  - `C` contract change (API, schema, wire, IPC, exported signature)
+  - `S` security, auth, permissions, PII
+  - `M` migration, backfill, data integrity, irreversible op
+  - `X` cross-domain (more than one service, screen, package, boundary)
+  - `R` runtime impact (production deploy, observability, perf-sensitive path)
+- **Tier:** <Lightweight | Standard | Full>
+- **Notes:** <optional 1-2 lines justifying the choice if non-obvious>
+
 ## User Stories
 
 1. As a <role>, I want <action> so that <benefit>.

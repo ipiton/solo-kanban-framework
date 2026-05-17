@@ -13,22 +13,27 @@ For a fuller Codex integration, copy the skill folders from `agents/codex/skills
 - Keep WIP at one primary task plus one urgent fix at most.
 - Do not work directly on the main integration branch unless explicitly asked.
 
-Default pipeline:
+Pipeline is selected by **tier** (derived from the Risk Profile in `requirements.md`). See `docs/workflow.md` `Step Matrix` for full rules.
 
 ```text
-start-task -> research -> spec -> plan -> implement -> write-tests -> testing -> [deep-review] -> finalize -> merge
+Lightweight: implement -> testing -> finalize
+Standard:    start-task -> research -> spec -> plan -> implement -> write-tests -> testing -> finalize
+Full:        start-task -> research -> spec -> plan -> implement -> write-tests -> testing -> deep-review -> finalize
 ```
 
-Use `research --grounded` for evidence-only uncertainty checks. Use `plan --parallel` only when write scopes are disjoint. Use `plan-improve` to refine an existing implementation checklist without restarting the task. Use `qa-check` for read-only Definition of Done verification. Use `deep-review` for large diffs, security-sensitive work, pre-release review, or changes spanning several domains.
+Add `deploy` before `finalize` when the `R` signal is present. `deep-review` is mandatory for any `S`, any `M`, pre-release, or 3+ signals.
+
+Use `research --grounded` for evidence-only uncertainty checks. Use `plan --parallel` only when write scopes are disjoint. Use `plan-improve` to refine an existing implementation checklist without restarting the task. Use `qa-check` for read-only Definition of Done verification.
 
 ## Task Artifacts
 
 Expected active workspace:
 
-- `tasks/<slug>/requirements.md`
+- `tasks/<slug>/requirements.md` — includes the Risk Profile
 - `tasks/<slug>/research.md` when research level requires it
-- `tasks/<slug>/Spec.md` for non-trivial non-docs tasks
+- `tasks/<slug>/Spec.md` for Standard and Full tier tasks
 - `tasks/<slug>/tasks.md` before implementation
+- `tasks/<slug>/review-findings.md` when `deep-review` runs
 
 Completed workspaces move to `tasks/archive/<slug>/`.
 

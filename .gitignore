@@ -5,3 +5,5 @@
 .cache/
 .tmp/
 node_modules/
+.claude/
+

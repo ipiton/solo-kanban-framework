@@ -24,11 +24,12 @@ Update documentation, changelog, release notes, or knowledge artifacts affected 
 
 1. Confirm success criteria.
 2. Confirm checks passed or skipped checks have explicit reasons.
-3. Move follow-ups into `BUGS.md`, `TECH-DEBT.md`, or `BACKLOG.md`.
-4. Add outcome to `DONE.md`.
-5. Remove task from WIP in `NEXT.md`.
-6. Move `tasks/<slug>/` to `tasks/archive/<slug>/`.
-7. Commit closure changes when repository policy expects it.
+3. Confirm the **Deep Review gate** if mandatory triggers apply (any `S`, any `M`, pre-release, or 3+ signals). `tasks/<slug>/review-findings.md` must exist; blockers must be resolved; majors must be resolved or deferred with a recorded follow-up.
+4. Move follow-ups from research, review, and testing into `BUGS.md`, `TECH-DEBT.md`, or `BACKLOG.md`.
+5. Add outcome to `DONE.md`.
+6. Remove task from WIP in `NEXT.md`.
+7. Move `tasks/<slug>/` to `tasks/archive/<slug>/` (include `review-findings.md` if present).
+8. Commit closure changes when repository policy expects it.
 
 ## Merge
 

@@ -102,6 +102,14 @@ based_on:
 - **Metrics:** <metrics or not applicable>
 - **Alerts:** <alerts or not applicable>
 
+## Deep Review
+
+<!-- See docs/workflow.md `Deep Review` for trigger and output rules. -->
+
+- **Mandatory triggers present:** <list of `S` / `M` / pre-release / 3+ signals, or "none">
+- **Discretionary triggers present:** <list of large-diff / `C+X` / novel-pattern / author-doubt, or "none">
+- **Decision:** <"required" | "recommended, will run" | "recommended, skipped (reason: ...)" | "not applicable">
+
 ## Open Questions
 
 - [ ] <question or none>

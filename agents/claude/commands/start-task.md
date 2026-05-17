@@ -39,7 +39,11 @@ Read:
 6. Create `tasks/<slug>/requirements.md` from the template.
 7. Create or switch to a task branch unless the user explicitly asked to stay on the current branch.
 8. Fill requirements with problem framing, user stories, success criteria, non-goals, constraints, and discovery notes.
-9. Decide research level using workflow triggers.
+9. Classify the **Risk Profile** in `requirements.md`:
+   - Mark signals from `{C, S, M, X, R}` or `none` (see `docs/workflow.md` `Step Matrix` for signal definitions).
+   - Derive **Tier**: `Lightweight` (zero signals) / `Standard` (1-2 of C/X/R only) / `Full` (any S, any M, or 3+ signals).
+   - If uncertain, ask the user before guessing — the tier determines the required pipeline.
+10. Decide research level using workflow triggers. Research triggers and risk signals overlap; one or more risk signals usually implies research level 2 or 3.
 
 ## Output
 
@@ -49,6 +53,7 @@ Report:
 - WIP status;
 - branch;
 - workspace path;
-- research level and next command.
+- **risk profile** (signals + tier);
+- research level and next command (derived from tier per `Step Matrix`).
 
-Stop if requirements are unclear enough to change the solution.
+Stop if requirements are unclear enough to change the solution, or if the risk profile cannot be determined from current information.

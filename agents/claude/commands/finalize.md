@@ -35,11 +35,12 @@ Skip only with `--phase=docs-only`.
 
 1. Confirm success criteria and Definition of Done.
 2. Confirm tests/checks passed or skipped checks have explicit reasons.
-3. Move review, testing, and research follow-ups into `BUGS.md`, `TECH-DEBT.md`, or `BACKLOG.md`.
-4. Add a compact outcome to `DONE.md`.
-5. Remove the task from WIP in `NEXT.md`.
-6. Move `tasks/<slug>/` to `tasks/archive/<slug>/`.
-7. Commit closure changes if repository policy expects it.
+3. Confirm the **Deep Review gate** if mandatory triggers apply (any `S`, any `M`, pre-release, or 3+ signals per `requirements.md` Risk Profile). `tasks/<slug>/review-findings.md` must exist with blockers resolved and majors resolved or explicitly deferred. Stop if missing — do not auto-skip the gate.
+4. Move review, testing, and research follow-ups into `BUGS.md`, `TECH-DEBT.md`, or `BACKLOG.md`.
+5. Add a compact outcome to `DONE.md`.
+6. Remove the task from WIP in `NEXT.md`.
+7. Move `tasks/<slug>/` to `tasks/archive/<slug>/` (preserve `review-findings.md` in the archive).
+8. Commit closure changes if repository policy expects it.
 
 ## Output
 

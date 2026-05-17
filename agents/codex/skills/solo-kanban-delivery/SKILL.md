@@ -30,7 +30,23 @@ Run the strongest practical checks for changed files. Report skipped checks with
 
 ## Deep Review
 
-Use when diff is large, security-sensitive, pre-release, or multi-domain. Classify findings as fix, defer, or note. Fix blockers before finalize.
+Independent review pass. Testing checks that code matches the spec; deep review checks that the spec matches reality and that the implementer's blind spots are not also the test suite's blind spots.
+
+**Mandatory** (finalize blocked until findings recorded):
+- `S` signal: security, auth, permissions, privacy, PII;
+- `M` signal: migration, backfill, data integrity, irreversible op;
+- pre-release for any externally visible release;
+- 3+ risk signals in any combination.
+
+**Discretionary** (skip allowed with recorded reason):
+- diff above ~200 LOC without S/M;
+- combined `C+X`;
+- novel pattern or first-time library use;
+- author's reasoned doubt.
+
+Pick review lenses from the present signals: `S` → auth/secrets/input validation, `M` → migration safety/reversibility, `C` → wire format/version compat, `X` → cross-boundary invariants, `R` → observability/rollout. Always include correctness, tests adequacy, and maintainability.
+
+Classify each finding by **severity** (`blocker` | `major` | `minor` | `nit`) and **disposition** (`fix-here` | `defer-bug` | `defer-tech-debt` | `defer-backlog` | `reject`). Record in `tasks/<slug>/review-findings.md`. Resolve blockers before finalize; resolve majors or open follow-up entries. Self-audit by the implementer is additive, not substitutive — for mandatory triggers, an independent perspective is required.
 
 ## Deploy
 

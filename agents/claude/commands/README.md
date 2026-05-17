@@ -14,7 +14,7 @@ Command files:
 | `implement.md` | Execute the checklist with scoped diffs. |
 | `write-tests.md` | Add or update tests for changed behavior. |
 | `testing.md` | Run checks and record skipped validation. |
-| `deep-review.md` | Conditional multi-perspective review for large, sensitive, pre-release, or multi-domain changes. |
+| `deep-review.md` | Independent multi-perspective review. Mandatory for `S` / `M` / pre-release / 3+ signals; discretionary for large diff, `C+X`, novel pattern, or author doubt. |
 | `deploy.md` | Optional project-specific runtime deployment or release verification for slices that need it. |
 | `qa-check.md` | Read-only Definition of Done verification. |
 | `finalize.md` | Update docs, capture follow-ups, archive workspace, and prepare merge. |

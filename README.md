@@ -35,9 +35,13 @@ EXECUTION: implement -> write-tests -> [testing] -> [deep-review] -> [deploy]
 CLOSURE:   finalize -> merge
 ```
 
-`finalize` combines documentation updates and task closure so docs, follow-ups, archive movement, and merge preparation happen in one explicit phase.
+The actual pipeline for a task is selected by its **tier** (`Lightweight` / `Standard` / `Full`), derived from a Risk Profile of five signals: contract change, security, migration, cross-domain, runtime impact. See `docs/workflow.md` `Step Matrix` for the full rules.
 
-`deep-review` is conditional. Use it for large diffs, security-sensitive work, pre-release review, or changes that cross several domains.
+- **Lightweight** (no signals): `implement -> testing -> finalize`.
+- **Standard** (1-2 of `C` / `X` / `R`): full pipeline above, `deep-review` optional.
+- **Full** (any `S` or any `M`, 3+ signals, or large diff): full pipeline above with `deep-review` mandatory.
+
+`finalize` combines documentation updates and task closure so docs, follow-ups, archive movement, and merge preparation happen in one explicit phase.
 
 ## Repository Layout
 
@@ -58,7 +62,7 @@ solo-kanban/
 3. Add the workflow summary from `docs/workflow.md` to your repository agent instructions.
 4. Optional: copy `agents/claude/commands/*.md` into your Claude commands directory.
 5. Optional: copy `agents/codex/skills/*` into your Codex skills directory.
-6. For every task, create `tasks/<slug>/` from the task templates.
+6. For every task, classify the Risk Profile and create `tasks/<slug>/` from the task templates. Trivial sub-lightweight changes (comments, formatting, obvious typos) may skip the workspace and live as a one-line `DONE.md` entry plus the commit.
 7. Keep `NEXT.md` and `DONE.md` as the source of truth for work state.
 
 A minimal project layout looks like this:
@@ -87,8 +91,16 @@ your-repo/
 
 ## Status
 
-This is an extracted framework draft. It intentionally avoids project-specific deployment, infrastructure, database, or application rules. Add local rules in your own repository on top of this baseline.
+Version 1.0.0 — first public release. The framework intentionally avoids project-specific deployment, infrastructure, database, or application rules. Add local rules in your own repository on top of this baseline.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to propose changes, report friction, or add adapters for other agents. By participating you agree to the [Code of Conduct](CODE_OF_CONDUCT.md).
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
 ## License
 
-No license has been selected yet. Choose one before publishing the repository publicly.
+[MIT](LICENSE) © 2026 Vitaliy Semenov.

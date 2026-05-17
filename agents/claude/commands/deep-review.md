@@ -1,5 +1,5 @@
 ---
-description: Conditional multi-perspective review for high-risk Solo Kanban changes.
+description: Independent multi-perspective review for Solo Kanban tasks with mandatory or discretionary triggers.
 allowed-tools:
   - Read
   - Write
@@ -13,25 +13,79 @@ user-invocable: true
 
 # Deep Review
 
-Run a deeper review when normal testing is not enough.
+Run an independent review pass. Testing checks that code matches the spec; deep review checks that the spec matches reality and that the implementer's blind spots are not also the test suite's blind spots.
 
-Use for:
+## When To Run
 
-- large diffs, roughly over 200 changed lines;
-- security, auth, permissions, privacy, or data integrity changes;
-- pre-release review;
-- changes spanning several domains or architectural boundaries.
+**Mandatory** — `finalize` cannot proceed without recorded findings:
+
+- `S` signal: security, auth, permissions, privacy, PII;
+- `M` signal: migration, backfill, data integrity, irreversible op;
+- pre-release review for any externally visible release;
+- three or more risk signals in any combination (Full tier by signal count).
+
+**Discretionary** — may be skipped with a recorded reason:
+
+- diff exceeds approximately 200 changed lines without `S` or `M`;
+- combined `C` and `X` signals;
+- novel pattern, first-time use of a library or framework, or first-of-its-kind change;
+- author has reasoned doubt about a non-obvious decision.
+
+If none of the above apply, do not run `deep-review`. The pipeline is intentionally lighter.
 
 ## Steps
 
-1. Read requirements, research, spec, tasks, test results, and current diff.
-2. Define review lenses relevant to the task, such as correctness, security, data, UX, performance, operations, maintainability, or tests.
-3. Review only the task scope.
-4. Classify findings as `FIX`, `DEFER`, or `NOTE`.
-5. Fix blocking `FIX` findings or stop with a clear blocker.
-6. Record non-blocking findings in `tasks/<slug>/review-findings.md`.
-7. Move follow-ups into planning files during `finalize`.
+1. Read `requirements.md` (note Risk Profile), `research.md`, `Spec.md` (note Deep Review section), `tasks.md`, test results, and the full current diff.
+2. Confirm trigger classification: mandatory, discretionary-running, or discretionary-skipped. If skipped, record reason and stop.
+3. Define review lenses relevant to the signals present:
+   - `S` → auth, ownership, input validation, secret handling, supply chain;
+   - `M` → migration safety, backfill correctness, reversibility, concurrent-write behavior;
+   - `C` → contract compatibility, wire format, version negotiation, client impact;
+   - `X` → cross-boundary invariants, ownership of failure modes, integration tests;
+   - `R` → observability coverage, rollout/rollback, perf regression, alert wiring.
+   Always add at least: correctness, tests adequacy, and maintainability.
+4. Review only the task scope. Use independent perspective — do not anchor on the author's stated rationale.
+5. Classify each finding:
+   - **Severity:** `blocker` (must fix before finalize) | `major` (fix or explicit defer with follow-up) | `minor` | `nit`.
+   - **Disposition:** `fix-here` | `defer-bug` | `defer-tech-debt` | `defer-backlog` | `reject` (with reason).
+6. Fix blockers in the current task or stop with a clear blocker note. Resolve majors or open the follow-up entry.
+7. Record findings in `tasks/<slug>/review-findings.md` using the output schema below.
+8. Move deferred follow-ups into `BUGS.md`, `TECH-DEBT.md`, or `BACKLOG.md` during `finalize`.
 
-## Output
+## Output Schema
 
-Provide a findings summary with file references, severity, recommended action, and verification impact.
+`tasks/<slug>/review-findings.md`:
+
+```markdown
+# Deep Review Findings: <Task Title>
+
+**Trigger classification:** <mandatory | discretionary-running | discretionary-skipped>
+**Reviewer perspective:** <agent name or human reviewer>
+**Reviewed at:** YYYY-MM-DD
+
+## Findings
+
+### F1 — <one-line title>
+- **Severity:** blocker | major | minor | nit
+- **Location:** `path/to/file.go:42`
+- **Issue:** <what is wrong or risky>
+- **Recommendation:** <what to do>
+- **Disposition:** fix-here | defer-bug | defer-tech-debt | defer-backlog | reject (reason: ...)
+- **Follow-up:** <link/path to BUGS.md / TECH-DEBT.md entry, or "n/a">
+
+### F2 — ...
+
+## Skip Register
+
+<!-- Discretionary triggers consciously not run. Omit section if none. -->
+
+- <trigger>: <reason for skip>
+
+## Anti-Pattern Check
+
+- [ ] Self-audit was not treated as a substitute for independent review.
+```
+
+## Anti-Pattern: Self-Audit As Substitute
+
+A self-review pass by the implementer is additive, not substitutive. The same mind that wrote the code and tests cannot reliably challenge the assumption both of them share. If only the implementer has reviewed mandatory-trigger work, deep review has not actually run — escalate to an independent reviewer (agentic or human).
