@@ -1,5 +1,9 @@
 # Solo Kanban
 
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](CHANGELOG.md)
+[![Status](https://img.shields.io/badge/status-public%20release-brightgreen.svg)](#status)
+
 Solo Kanban is a git-native delivery framework for solo developers working with AI coding agents.
 
 It keeps product intent, technical scope, implementation steps, validation, and closure evidence in versioned files rather than in chat history or a private task tracker.
@@ -28,20 +32,29 @@ The result is a lightweight process that gives AI agents enough structure to exe
 
 ## Pipeline
 
-```text
-DISCOVERY: start-task -> research [--grounded]
-DESIGN:    spec -> plan [--parallel] -> [plan-improve]
-EXECUTION: implement -> write-tests -> [testing] -> [deep-review] -> [deploy]
-CLOSURE:   finalize -> merge
+```mermaid
+flowchart LR
+    A(start-task) --> B(research) --> C(spec) --> D(plan)
+    D --> E(implement) --> F(write-tests) --> G(testing)
+    G --> J(finalize) --> K(merge)
+    G -.->|Full tier| H(deep-review) -.-> J
+    G -.->|R signal| I(deploy) -.-> J
+
+    style H stroke-dasharray: 5 5
+    style I stroke-dasharray: 5 5
 ```
 
-The actual pipeline for a task is selected by its **tier** (`Lightweight` / `Standard` / `Full`), derived from a Risk Profile of five signals: contract change, security, migration, cross-domain, runtime impact. See `docs/workflow.md` `Step Matrix` for the full rules.
+The actual pipeline for a task is selected by its **tier**, derived from a Risk Profile of five signals: contract change (`C`), security (`S`), migration (`M`), cross-domain (`X`), runtime impact (`R`). See [`docs/workflow.md`](docs/workflow.md) `Step Matrix` for the full rules.
 
-- **Lightweight** (no signals): `implement -> testing -> finalize`.
-- **Standard** (1-2 of `C` / `X` / `R`): full pipeline above, `deep-review` optional.
-- **Full** (any `S` or any `M`, 3+ signals, or large diff): full pipeline above with `deep-review` mandatory.
+| Tier | Trigger | Pipeline |
+|---|---|---|
+| **Lightweight** | No signals | `implement → testing → finalize` |
+| **Standard** | 1-2 of `{C, X, R}` only | full pipeline above, `deep-review` skipped |
+| **Full** | any `S` / `M`, 3+ signals, or large diff | full pipeline above with `deep-review` mandatory |
 
 `finalize` combines documentation updates and task closure so docs, follow-ups, archive movement, and merge preparation happen in one explicit phase.
+
+A complete worked example — every artifact filled in for one real task — lives in [`examples/sample-task/`](examples/sample-task/).
 
 ## Repository Layout
 
