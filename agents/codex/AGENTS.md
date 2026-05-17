@@ -14,10 +14,10 @@ Use these instructions as a starting point for repositories that adopt Solo Kanb
 Default pipeline:
 
 ```text
-start-task -> research -> spec -> plan -> implement -> write-tests -> testing -> finalize -> merge
+start-task -> research -> spec -> plan -> implement -> write-tests -> testing -> [deep-review] -> finalize -> merge
 ```
 
-Use `research --grounded` for evidence-only uncertainty checks. Use `plan --parallel` only when write scopes are disjoint. Use `plan-improve` to refine an existing implementation checklist without restarting the task. Use `qa-check` for read-only Definition of Done verification.
+Use `research --grounded` for evidence-only uncertainty checks. Use `plan --parallel` only when write scopes are disjoint. Use `plan-improve` to refine an existing implementation checklist without restarting the task. Use `qa-check` for read-only Definition of Done verification. Use `deep-review` for large diffs, security-sensitive work, pre-release review, or changes spanning several domains.
 
 ## Task Artifacts
 

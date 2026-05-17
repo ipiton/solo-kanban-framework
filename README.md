@@ -31,11 +31,13 @@ The result is a lightweight process that gives AI agents enough structure to exe
 ```text
 DISCOVERY: start-task -> research [--grounded]
 DESIGN:    spec -> plan [--parallel] -> [plan-improve]
-EXECUTION: implement -> write-tests -> [testing] -> [deploy]
+EXECUTION: implement -> write-tests -> [testing] -> [deep-review] -> [deploy]
 CLOSURE:   finalize -> merge
 ```
 
 `finalize` combines documentation updates and task closure so docs, follow-ups, archive movement, and merge preparation happen in one explicit phase.
+
+`deep-review` is conditional. Use it for large diffs, security-sensitive work, pre-release review, or changes that cross several domains.
 
 ## Repository Layout
 

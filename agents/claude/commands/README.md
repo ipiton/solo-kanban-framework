@@ -14,6 +14,7 @@ Recommended command semantics:
 | `/implement` | Execute the checklist with scoped diffs. |
 | `/write-tests` | Add or update tests for changed behavior. |
 | `/testing` | Run checks and record skipped validation. |
+| `/deep-review` | Conditional multi-perspective review for large, sensitive, pre-release, or multi-domain changes. |
 | `/deploy` | Optional project-specific runtime deployment or release verification for slices that need it. |
 | `/qa-check` | Read-only Definition of Done verification. |
 | `/finalize` | Update docs, capture follow-ups, archive workspace, and prepare merge. |

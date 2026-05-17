@@ -65,6 +65,8 @@ Never present skipped tests as passing tests.
 
 Use `qa-check` for read-only Definition of Done verification. It should report status per item and avoid mutating planning state.
 
+Use `deep-review` when the diff is large, security-sensitive, pre-release, or spans several domains. Treat its output as review evidence: fix blocking findings, record non-blocking findings, and carry unresolved follow-ups into planning files during `finalize`.
+
 ## Finalize Mode
 
 `finalize` replaces separate documentation and close commands. Treat it as two phases:

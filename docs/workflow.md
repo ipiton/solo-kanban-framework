@@ -12,7 +12,7 @@ Solo Kanban uses a four-phase pipeline:
 QUEUE
   -> DISCOVERY: start-task -> research [--grounded]
   -> DESIGN: spec -> plan [--parallel] -> [plan-improve]
-  -> EXECUTION: implement -> write-tests -> [testing] -> [deploy]
+  -> EXECUTION: implement -> write-tests -> [testing] -> [deep-review] -> [deploy]
   -> CLOSURE: finalize -> merge
   -> DONE
 ```
@@ -22,7 +22,7 @@ Core workflow verbs:
 | Kind | Verbs |
 |---|---|
 | Core | `start-task`, `research`, `spec`, `plan`, `implement`, `write-tests`, `testing`, `finalize`, `merge` |
-| Conditional | `deploy` |
+| Conditional | `deep-review`, `deploy` |
 | Utility | `plan-improve`, `qa-check` |
 | Mode flags | `research --grounded`, `plan --parallel` |
 
@@ -63,13 +63,13 @@ A task estimated above two days should be split into vertical slices. Each slice
 
 | Type / Size | Small (<1d) | Medium (1-2d) | Large (>2d) |
 |---|---|---|---|
-| `bug` | research -> spec -> plan -> implement -> testing -> finalize | research -> spec -> plan -> implement -> write-tests -> testing -> finalize | research -> spec -> plan -> implement -> write-tests -> testing -> deploy -> finalize |
-| `feature` | research -> spec -> plan -> implement -> write-tests -> testing -> finalize | research -> spec -> plan -> implement -> write-tests -> testing -> deploy -> finalize | research -> spec -> plan -> implement -> write-tests -> testing -> deploy -> finalize |
-| `refactor` | research -> spec -> plan -> implement -> testing -> finalize | research -> spec -> plan -> implement -> write-tests -> testing -> finalize | research -> spec -> plan -> implement -> write-tests -> testing -> finalize |
-| `tech-debt` | research -> spec -> plan -> implement -> testing -> finalize | research -> spec -> plan -> implement -> testing -> finalize | research -> spec -> plan -> implement -> testing -> finalize |
+| `bug` | research -> spec -> plan -> implement -> testing -> finalize | research -> spec -> plan -> implement -> write-tests -> testing -> finalize | research -> spec -> plan -> implement -> write-tests -> testing -> deep-review -> deploy -> finalize |
+| `feature` | research -> spec -> plan -> implement -> write-tests -> testing -> finalize | research -> spec -> plan -> implement -> write-tests -> testing -> deploy -> finalize | research -> spec -> plan -> implement -> write-tests -> testing -> deep-review -> deploy -> finalize |
+| `refactor` | research -> spec -> plan -> implement -> testing -> finalize | research -> spec -> plan -> implement -> write-tests -> testing -> finalize | research -> spec -> plan -> implement -> write-tests -> testing -> deep-review -> finalize |
+| `tech-debt` | research -> spec -> plan -> implement -> testing -> finalize | research -> spec -> plan -> implement -> testing -> finalize | research -> spec -> plan -> implement -> testing -> deep-review -> finalize |
 | `docs` | research -> implement -> testing -> finalize --phase=docs-only | research -> plan -> implement -> testing -> finalize | research -> plan -> implement -> testing -> finalize |
 
-Projects can make `deploy` conditional on whether the slice affects runtime systems.
+Projects can make `deep-review` and `deploy` conditional on risk. A typical `deep-review` trigger is a large diff, security-sensitive work, pre-release review, or a change spanning multiple domains. Deploy remains conditional on whether the slice affects runtime systems.
 
 ## Research Policy
 
@@ -118,6 +118,17 @@ If research exceeds the limit, split the task or move into specification.
 | Planning updated | during finalize/merge | `NEXT.md`, `DONE.md`, and follow-up files reflect reality |
 
 `qa-check` is a read-only utility for verifying the Definition of Done. It should report pass, warn, or fail per item without mutating task state.
+
+## Deep Review
+
+`deep-review` is a conditional multi-perspective review step. Use it when normal testing is not enough to evaluate risk:
+
+- large diffs, for example more than about 200 changed lines;
+- security, auth, permissions, privacy, or data integrity changes;
+- pre-release review;
+- changes spanning multiple modules, services, screens, or architectural boundaries.
+
+Record actionable findings in the task workspace and move remaining follow-ups into `BUGS.md`, `TECH-DEBT.md`, or `BACKLOG.md` during `finalize`.
 
 ## Definition Of Done
 
