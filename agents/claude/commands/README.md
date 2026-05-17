@@ -7,14 +7,16 @@ Recommended command semantics:
 | Command | Purpose |
 |---|---|
 | `/start-task` | Select or create a task, move it into WIP, create `tasks/<slug>/requirements.md`, create a branch. |
-| `/research` | Resolve bounded unknowns and produce `research.md` when required. |
+| `/research [--grounded]` | Resolve bounded unknowns and produce `research.md` when required. Grounded mode requires evidence-backed claims. |
 | `/spec` | Produce the target design and validation contract. |
-| `/plan` | Produce a concrete implementation checklist. |
+| `/plan [--parallel]` | Produce a concrete implementation checklist. Parallel mode is for disjoint write scopes. |
+| `/plan-improve` | Improve an existing `tasks.md` without restarting the task. |
 | `/implement` | Execute the checklist with scoped diffs. |
 | `/write-tests` | Add or update tests for changed behavior. |
 | `/testing` | Run checks and record skipped validation. |
-| `/write-doc` | Update docs affected by behavior, contracts, or process. |
-| `/end-task` | Finalize, capture follow-ups, archive workspace. |
+| `/deploy` | Optional project-specific runtime deployment or release verification for slices that need it. |
+| `/qa-check` | Read-only Definition of Done verification. |
+| `/finalize` | Update docs, capture follow-ups, archive workspace, and prepare merge. |
 | `/merge-to-main` | Merge and update `DONE.md` / `NEXT.md`. |
 
-Keep project-specific deploy, release, Kubernetes, memory, or analytics commands outside the core command set.
+Keep project-specific release, infrastructure, memory, or analytics commands outside the core command set.

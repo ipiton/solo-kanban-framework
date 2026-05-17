@@ -10,7 +10,7 @@ Classic Kanban is useful for visualizing work, but it is usually under-specified
 
 - a tiny planning system that lives in the repository;
 - one active task workspace per slice;
-- explicit research, specification, planning, implementation, validation, documentation, and closure gates;
+- explicit discovery, design, execution, and closure gates;
 - WIP limits that prevent context drift;
 - archived task evidence for future agents and humans.
 
@@ -25,6 +25,17 @@ The result is a lightweight process that gives AI agents enough structure to exe
 - **Specification before code:** non-trivial code changes get a short technical spec.
 - **Quality gates:** every transition has a validation expectation.
 - **Archive on close:** completed workspaces move to `tasks/archive/<slug>/`.
+
+## Pipeline
+
+```text
+DISCOVERY: start-task -> research [--grounded]
+DESIGN:    spec -> plan [--parallel] -> [plan-improve]
+EXECUTION: implement -> write-tests -> [testing] -> [deploy]
+CLOSURE:   finalize -> merge
+```
+
+`finalize` combines documentation updates and task closure so docs, follow-ups, archive movement, and merge preparation happen in one explicit phase.
 
 ## Repository Layout
 

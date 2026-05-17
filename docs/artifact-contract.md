@@ -2,6 +2,11 @@
 
 This contract defines the files Solo Kanban expects. Paths are examples; projects may place planning files elsewhere if agent instructions point to the chosen locations.
 
+**Status:** canonical  
+**Last reviewed:** 2026-05-17  
+**Next review:** quarterly, or ad hoc when workflow phases, templates, or artifact fields change.  
+**Update policy:** update body content in place for template or workflow changes; treat the bug vs tech-debt boundary as a stable policy that should change only with deliberate review.
+
 ## Source Of Truth Layers
 
 | Layer | Example path | Role |
@@ -155,3 +160,37 @@ Planning files do not replace task workspaces. They route and summarize work.
 | `BACKLOG.md` | Future ideas | Urgent bugs |
 | `DECISIONS.md` | Durable decisions and trade-offs | Daily notes |
 | `ROADMAP.md` | Strategic streams | Task-level checklists |
+
+## Completion Rules
+
+The default pipeline tail is:
+
+```text
+finalize -> merge -> done
+```
+
+`finalize` has two logical phases:
+
+| Phase | Purpose |
+|---|---|
+| Phase 1: docs | update documentation, release notes, knowledge artifacts, or project docs affected by the task |
+| Phase 2: closure | confirm checks, capture follow-ups, archive the workspace, and prepare the merge |
+
+Before `finalize` Phase 1:
+
+- `tasks.md` reflects real progress.
+- Deviations from `Spec.md` are recorded in `Spec.md` or `tasks.md`.
+- Verification from the Definition of Done is complete, or skipped checks have explicit reasons.
+- Follow-ups from research, review, and testing are moved to `BUGS.md`, `TECH-DEBT.md`, or `BACKLOG.md`.
+
+During `finalize` Phase 2:
+
+- `DONE.md` receives a compact outcome.
+- `NEXT.md` is cleared of the completed WIP task.
+- `tasks/<slug>/` moves to `tasks/archive/<slug>/`.
+
+Before `merge`:
+
+- closure has run;
+- the branch is up to date with the integration branch;
+- quality gates have passed or the remaining risk is explicitly accepted.

@@ -2,14 +2,31 @@
 
 This document defines the default Solo Kanban pipeline. Projects can adapt the commands and validation checks, but should keep the state model and artifacts stable.
 
+**Version:** 3.0
+
 ## State Machine
 
+Solo Kanban uses a four-phase pipeline:
+
 ```text
-QUEUE -> START -> RESEARCH -> SPEC -> PLAN -> IMPLEMENT -> WRITE-TESTS -> TESTING -> WRITE-DOC -> END-TASK -> MERGE -> DONE
-              \                         \                         /
-               \                         ---- optional by task ----
-                ---- docs-only lightweight path -------------------
+QUEUE
+  -> DISCOVERY: start-task -> research [--grounded]
+  -> DESIGN: spec -> plan [--parallel] -> [plan-improve]
+  -> EXECUTION: implement -> write-tests -> [testing] -> [deploy]
+  -> CLOSURE: finalize -> merge
+  -> DONE
 ```
+
+Core workflow verbs:
+
+| Kind | Verbs |
+|---|---|
+| Core | `start-task`, `research`, `spec`, `plan`, `implement`, `write-tests`, `testing`, `finalize`, `merge` |
+| Conditional | `deploy` |
+| Utility | `plan-improve`, `qa-check` |
+| Mode flags | `research --grounded`, `plan --parallel` |
+
+`finalize` consolidates the former documentation and close steps. It has two logical phases: Phase 1 updates docs and knowledge artifacts; Phase 2 closes the task, captures follow-ups, archives the workspace, and prepares the merge.
 
 ## States
 
@@ -25,7 +42,7 @@ QUEUE -> START -> RESEARCH -> SPEC -> PLAN -> IMPLEMENT -> WRITE-TESTS -> TESTIN
 ### Non-docs Tasks
 
 ```text
-start-task -> research -> spec -> plan -> implement -> write-tests -> testing -> write-doc -> end-task -> merge
+start-task -> research -> spec -> plan -> implement -> write-tests -> testing -> finalize -> merge
 ```
 
 Use this for features, bugs, refactors, integrations, data changes, security changes, or runtime behavior changes.
@@ -33,7 +50,7 @@ Use this for features, bugs, refactors, integrations, data changes, security cha
 ### Docs-Only Small Tasks
 
 ```text
-start-task -> research-mini -> implement -> testing -> write-doc -> end-task -> merge
+start-task -> research-mini -> implement -> testing -> finalize --phase=docs-only -> merge
 ```
 
 Use this only when the task changes documentation without changing process, code contracts, architecture, runtime behavior, or generated artifacts.
@@ -41,6 +58,18 @@ Use this only when the task changes documentation without changing process, code
 ### Large Tasks
 
 A task estimated above two days should be split into vertical slices. Each slice gets its own task workspace and passes the normal pipeline.
+
+## Step Matrix
+
+| Type / Size | Small (<1d) | Medium (1-2d) | Large (>2d) |
+|---|---|---|---|
+| `bug` | research -> spec -> plan -> implement -> testing -> finalize | research -> spec -> plan -> implement -> write-tests -> testing -> finalize | research -> spec -> plan -> implement -> write-tests -> testing -> deploy -> finalize |
+| `feature` | research -> spec -> plan -> implement -> write-tests -> testing -> finalize | research -> spec -> plan -> implement -> write-tests -> testing -> deploy -> finalize | research -> spec -> plan -> implement -> write-tests -> testing -> deploy -> finalize |
+| `refactor` | research -> spec -> plan -> implement -> testing -> finalize | research -> spec -> plan -> implement -> write-tests -> testing -> finalize | research -> spec -> plan -> implement -> write-tests -> testing -> finalize |
+| `tech-debt` | research -> spec -> plan -> implement -> testing -> finalize | research -> spec -> plan -> implement -> testing -> finalize | research -> spec -> plan -> implement -> testing -> finalize |
+| `docs` | research -> implement -> testing -> finalize --phase=docs-only | research -> plan -> implement -> testing -> finalize | research -> plan -> implement -> testing -> finalize |
+
+Projects can make `deploy` conditional on whether the slice affects runtime systems.
 
 ## Research Policy
 
@@ -67,6 +96,14 @@ Research levels:
 
 If research exceeds the limit, split the task or move into specification.
 
+`research --grounded` is a stricter mode for uncertainty-sensitive tasks. In grounded mode, claims should be tied to code, docs, logs, specs, or cited external sources; guesses should be labeled as open questions.
+
+## Plan Iteration
+
+`plan --parallel` can be used when independent work can safely happen in separate worktrees or agent lanes. Only use it when write scopes are disjoint and verification can be run per lane.
+
+`plan-improve` updates an existing `tasks.md` without resetting the task. Use it when implementation or review reveals that the plan needs better sequencing, clearer verification, or narrower steps.
+
 ## Per-Step Gates
 
 | Gate | When | Expected check |
@@ -76,9 +113,11 @@ If research exceeds the limit, split the task or move into specification.
 | Research complete | before spec | open unknowns are resolved or explicitly carried forward |
 | Spec approved | before plan | target design, risks, contracts, and validation are defined |
 | Plan exists | before implementation | checklist has concrete steps and verification commands |
-| Tests/checks pass | before close | strongest practical checks for changed files pass |
-| Docs updated | before close | public or internal docs match changed behavior |
-| Planning updated | during close/merge | `NEXT.md`, `DONE.md`, and follow-up files reflect reality |
+| Tests/checks pass | before finalize Phase 2 | strongest practical checks for changed files pass |
+| Docs updated | during finalize Phase 1 | public or internal docs match changed behavior |
+| Planning updated | during finalize/merge | `NEXT.md`, `DONE.md`, and follow-up files reflect reality |
+
+`qa-check` is a read-only utility for verifying the Definition of Done. It should report pass, warn, or fail per item without mutating task state.
 
 ## Definition Of Done
 
@@ -91,6 +130,8 @@ A task is done when:
 5. Follow-ups are recorded in `BUGS.md`, `TECH-DEBT.md`, or `BACKLOG.md`.
 6. The task workspace is archived.
 7. The integration branch has a clear `DONE.md` entry.
+
+`finalize` should deduplicate expensive documentation or knowledge-index checks when both docs and closure phases run in one invocation.
 
 ## Stop Conditions
 

@@ -11,6 +11,14 @@ Use these instructions as a starting point for repositories that adopt Solo Kanb
 - Keep WIP at one primary task plus one urgent fix at most.
 - Do not work directly on the main integration branch unless explicitly asked.
 
+Default pipeline:
+
+```text
+start-task -> research -> spec -> plan -> implement -> write-tests -> testing -> finalize -> merge
+```
+
+Use `research --grounded` for evidence-only uncertainty checks. Use `plan --parallel` only when write scopes are disjoint. Use `plan-improve` to refine an existing implementation checklist without restarting the task. Use `qa-check` for read-only Definition of Done verification.
+
 ## Task Artifacts
 
 Expected active workspace:
@@ -32,6 +40,13 @@ Completed workspaces move to `tasks/archive/<slug>/`.
 ## Validation
 
 Run the strongest practical checks for changed code. Report skipped checks with reasons.
+
+## Finalize
+
+`finalize` has two phases:
+
+1. Update documentation or knowledge artifacts affected by the task.
+2. Capture follow-ups, archive `tasks/<slug>/`, update planning state, and prepare merge.
 
 ## Final Response
 

@@ -41,6 +41,16 @@ Research output should include:
 - the chosen decision;
 - inputs that must appear in the spec.
 
+Use `research --grounded` when the user needs evidence-only verification. In this mode, separate facts from assumptions and attach each meaningful claim to code, docs, logs, specs, or cited sources.
+
+## Planning Mode
+
+Use `plan` to turn requirements, research, and spec decisions into concrete implementation steps. Each step should be small enough to verify.
+
+Use `plan --parallel` only when independent lanes have disjoint write scopes and can be verified separately.
+
+Use `plan-improve` when the existing plan needs better ordering, narrower steps, or clearer verification after implementation, testing, or review feedback.
+
 ## Implementation Mode
 
 Implement from `tasks.md`. If the plan is wrong, update it with the reason instead of improvising silently.
@@ -53,9 +63,16 @@ Run the strongest practical checks for the changed area. If full checks are too 
 
 Never present skipped tests as passing tests.
 
-## Closing Mode
+Use `qa-check` for read-only Definition of Done verification. It should report status per item and avoid mutating planning state.
 
-Before closing a task:
+## Finalize Mode
+
+`finalize` replaces separate documentation and close commands. Treat it as two phases:
+
+1. Phase 1: update docs, changelog, release notes, or knowledge artifacts affected by the task.
+2. Phase 2: close the task, capture follow-ups, archive the workspace, and prepare merge.
+
+Before finalizing a task:
 
 1. Confirm success criteria.
 2. Confirm checks and skipped-check reasons.
