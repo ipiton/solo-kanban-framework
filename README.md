@@ -46,7 +46,8 @@ solo-kanban/
   docs/                  Method, workflow, artifact contract, agent guidance
   templates/planning/    NEXT, DONE, BUGS, TECH-DEBT, BACKLOG, DECISIONS, ROADMAP
   templates/task/        requirements, research, spec, implementation checklist
-  agents/                Optional starter instructions for AI agents
+  agents/claude/commands Claude command files for the workflow verbs
+  agents/codex/skills    Codex skills for core/planning/delivery/finalize
   examples/minimal/      Minimal project layout
   scripts/               Validation helpers
 ```
@@ -56,8 +57,10 @@ solo-kanban/
 1. Copy `templates/planning/*.md` into your project planning directory, for example `docs/planning/`.
 2. Copy `templates/task/*.md` into `tasks/templates/`.
 3. Add the workflow summary from `docs/workflow.md` to your repository agent instructions.
-4. For every task, create `tasks/<slug>/` from the task templates.
-5. Keep `NEXT.md` and `DONE.md` as the source of truth for work state.
+4. Optional: copy `agents/claude/commands/*.md` into your Claude commands directory.
+5. Optional: copy `agents/codex/skills/*` into your Codex skills directory.
+6. For every task, create `tasks/<slug>/` from the task templates.
+7. Keep `NEXT.md` and `DONE.md` as the source of truth for work state.
 
 A minimal project layout looks like this:
 
@@ -80,6 +83,8 @@ your-repo/
 - `docs/workflow.md` defines the pipeline and gates.
 - `docs/artifact-contract.md` defines the file formats.
 - `docs/ai-agent-playbook.md` explains how AI agents should use the framework.
+- `agents/claude/commands/*.md` contains Claude command adapters.
+- `agents/codex/skills/*/SKILL.md` contains Codex skill adapters.
 
 ## Status
 

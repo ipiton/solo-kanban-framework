@@ -2,6 +2,8 @@
 
 Use these instructions as a starting point for repositories that adopt Solo Kanban.
 
+For a fuller Codex integration, copy the skill folders from `agents/codex/skills/*` into the repository's Codex skills location and keep this file as the lightweight baseline.
+
 ## Workflow
 
 - Read repository instructions before coding.
