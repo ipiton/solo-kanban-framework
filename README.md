@@ -67,7 +67,6 @@ your-repo/
 - `docs/workflow.md` defines the pipeline and gates.
 - `docs/artifact-contract.md` defines the file formats.
 - `docs/ai-agent-playbook.md` explains how AI agents should use the framework.
-- `docs/article-outline.ru.md` is a Russian article outline for introducing the method.
 
 ## Status
 
