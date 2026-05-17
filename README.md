@@ -49,7 +49,6 @@ solo-kanban/
   agents/claude/commands Claude command files for the workflow verbs
   agents/codex/skills    Codex skills for core/planning/delivery/finalize
   examples/minimal/      Minimal project layout
-  scripts/               Validation helpers
 ```
 
 ## Quick Start
