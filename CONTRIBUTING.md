@@ -24,7 +24,7 @@ PRs that add team-coordination features, complex tooling, or new mandatory artif
 - Conventional commits (`feat:`, `fix:`, `docs:`, `refactor:`).
 - Update `CHANGELOG.md` under `## [Unreleased]` for any user-visible change.
 - Keep diffs scoped — one logical change per PR.
-- If you change `docs/workflow.md`, `docs/method.md`, `docs/artifact-contract.md`, or any template, ensure the adapter files in `agents/` stay in sync.
+- If you change `docs/workflow.md`, `docs/method.md`, `docs/agent-policies.md`, `docs/artifact-contract.md`, or any template, ensure the adapter files in `agents/` stay in sync.
 
 ## Code of Conduct
 

@@ -37,6 +37,14 @@ Surface the existing `users.last_login_at` column on the authenticated profile e
 - **Tests:** `dto_test.go` and `handler_test.go` cover existing fields with table-driven cases.
 - **Docs:** `openapi/users.yaml` declares the `UserMe` schema.
 
+## Design Premises
+
+| Premise | Confirmed by | Class | If wrong |
+|---|---|---|---|
+| `last_login_at` is written on every successful login, not only on first login | `auth/login.go:57` sets it unconditionally before issuing the session | code-read | the field shows the first login, not the last — misleading "last seen" |
+| No other consumer deserializes `UserMe` strictly (rejecting unknown fields) | grep for `UserMe` across the whole repository: only the handler, its tests, and the generated frontend SDK | call-path-traced | an additive field breaks a strict client |
+| Legacy users with `NULL` are a minority that the UI can show as "never" | frontend owner confirmed the empty state exists in the profile mock | assumed | many profiles show "never"; UI copy may need a follow-up — carried in Open Questions |
+
 ## Target Design
 
 `dto.UserMe` gains one field, `LastLoginAt *time.Time`, mapped 1:1 from `db.User.LastLoginAt` in the existing handler. OpenAPI schema gains one property. No service-layer change. No new package, no new helper.
@@ -117,3 +125,4 @@ Not applicable. Column exists and is populated.
 ## Open Questions
 
 - [x] Should the field be omitted when null, or always present? → Always present per research decision; matches frontend preference.
+- [x] Share of legacy users with `NULL` (premise 3, `assumed`) → not measured; UI shows "never" and the frontend owner accepted that. Revisit only if support reports confusion.

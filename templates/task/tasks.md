@@ -26,14 +26,17 @@ based_on:
 
 > **Wave 1** - independent steps
 
-- [ ] **1.1** <concrete action> <!-- mode: tdd | verify: <command or manual check> -->
+- [ ] **1.1** <concrete action> <!-- verify: <command or manual check> -->
 - [ ] **1.2** <concrete action> <!-- verify: <command or manual check> -->
 
 > **Wave 2** - depends on Wave 1
 
-- [ ] **1.3** <concrete action> <!-- depends: 1.1, 1.2 | mode: contract-first | verify: <command or manual check> -->
+- [ ] **1.3** <concrete action> <!-- depends: 1.1, 1.2 | verify: <command or manual check> -->
 
 **Phase verification:** <command or manual check>
+
+<!-- Test steps belong to a later phase: test files are written in write-tests, after the
+     deep-review verdict is `pass` (or when no deep-review is required). -->
 
 ## Phase 2: <name>
 
@@ -46,6 +49,7 @@ based_on:
 - [ ] All steps are complete or explicitly marked blocked/skipped
 - [ ] Success criteria from `requirements.md` are covered
 - [ ] Contracts from `Spec.md` are implemented or deviations are recorded
+- [ ] Deep review verdict is `pass`, or deep review was not required
 - [ ] Tests for changed behavior are added or updated
 - [ ] Phase checks pass
 - [ ] Docs/planning are updated if behavior, contracts, or process changed

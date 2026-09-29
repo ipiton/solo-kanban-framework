@@ -21,10 +21,10 @@ Risk: C R
 ## Pipeline That Was Run
 
 ```text
-start-task -> research -> spec -> plan -> implement -> write-tests -> testing -> deploy -> finalize
+start-task -> research -> spec -> plan-task -> implement -> write-tests -> testing -> deploy -> finalize -> merge
 ```
 
-`deep-review` was **not triggered** — no `S`, no `M`, not pre-release, fewer than 3 signals, diff under the 200-line threshold, no `C+X` combination, and no novel pattern. The Spec records this as `not applicable`.
+`deep-review` was **not triggered** — no `S`, no `M`, not pre-release, fewer than 3 signals, diff under the 200-line threshold, no `C+X` combination, and no novel pattern. The Spec records this as `not applicable`, so there is no `review-verdict.json` and `write-tests` followed `implement` directly. Had it run, it would have sat between `implement` and `write-tests`.
 
 ## Files In This Workspace
 
@@ -32,12 +32,14 @@ start-task -> research -> spec -> plan -> implement -> write-tests -> testing ->
 |---|---|
 | `requirements.md` | Problem framing, success criteria, Risk Profile. |
 | `research.md` | Light research (level 2): existing timestamp field patterns. |
-| `Spec.md` | Target design, contract change, deep-review decision. |
+| `Spec.md` | Design premises (including one honest `assumed`), target design, contract change, deep-review decision. |
 | `tasks.md` | Implementation checklist with verification commands. All boxes ticked. |
 | `DONE-entry.md` | The one-paragraph entry that landed in the project's `DONE.md`. |
 
 ## How To Read This
 
 Start with `requirements.md` to see the entry point. Then `research.md` resolves the one unknown ("are there existing timestamp patterns?"). `Spec.md` translates that into a concrete API change. `tasks.md` is the implementation checklist that drove the work. `DONE-entry.md` is the compact closure record.
+
+The Go, `make`, and OpenAPI commands are illustrative; substitute your repository's own checks.
 
 This is **not** a template. The templates live in `templates/task/` and `templates/planning/`. This is a worked artifact — what those templates look like once they have content.
