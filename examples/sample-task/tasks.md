@@ -30,8 +30,8 @@ based_on:
 
 ## Phase 2 — Tests
 
-- [x] **2.1** Add table-driven case to `dto_test.go`: `LastLoginAt = &past` → JSON `"last_login_at": "<RFC3339>"`. <!-- mode: tdd | verify: go test -run TestUserMeJSON ./internal/api/users/... -->
-- [x] **2.2** Add table-driven case: `LastLoginAt = nil` → JSON `"last_login_at": null`. <!-- mode: tdd | verify: go test -run TestUserMeJSON ./internal/api/users/... -->
+- [x] **2.1** Add table-driven case to `dto_test.go`: `LastLoginAt = &past` → JSON `"last_login_at": "<RFC3339>"`. <!-- verify: go test -run TestUserMeJSON ./internal/api/users/... -->
+- [x] **2.2** Add table-driven case: `LastLoginAt = nil` → JSON `"last_login_at": null`. <!-- verify: go test -run TestUserMeJSON ./internal/api/users/... -->
 - [x] **2.3** Add `handler_test.go` case asserting the field is propagated from the DB model to the response. <!-- verify: go test ./internal/api/users/... -->
 
 **Phase verification:** `go test ./internal/api/users/...` passes.

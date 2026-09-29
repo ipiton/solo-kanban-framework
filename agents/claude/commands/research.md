@@ -29,9 +29,10 @@ Read `requirements.md`, existing `research.md` if any, workflow policy, artifact
 2. Select research level: mini, light, or full.
 3. In `--grounded` mode, attach every meaningful claim to a source: code, docs, logs, specs, issues, or cited external links.
 4. Gather only enough evidence to answer the task questions.
-5. Compare viable options, not strawman options.
+5. Compare viable options, not strawman options. When a wrong choice is expensive (level 3, security or data decisions, cross-service integration, rollback costlier than the build), generate options in parallel: spawn independent read-only agents in one message, one lens each (`minimal-diff`, `reuse-first`, `reversibility`, or `operational`), same findings, no access to each other's output. Merge them yourself; record convergence as an observation, not a confirmation. `--options=N` forces the fan-out.
 6. Record the decision and the spec inputs.
 7. Write `research.md` for light/full research, or add `Research (mini)` to `requirements.md`.
+8. If any finding is `measured` — a live number, a production response, external data — store the raw data in `tasks/<slug>/evidence/`. Do not copy repository files there.
 
 ## Output
 
@@ -40,7 +41,7 @@ Produce or update the research artifact with:
 - TL;DR;
 - questions;
 - findings;
-- options;
+- options, with the `Generation:` line;
 - decision;
 - spec inputs;
 - references.

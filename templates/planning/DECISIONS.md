@@ -1,6 +1,6 @@
 # DECISIONS
 
-Durable project decisions with context and trade-offs.
+Durable project decisions with context and trade-offs, for the **current month**. Past months live in `archive/DECISIONS-YYYY-MM.md`; rotate by the date of each entry, not by line ranges.
 
 ## YYYY-MM-DD - Decision Title
 

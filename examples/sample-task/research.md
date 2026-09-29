@@ -37,6 +37,8 @@ The existing `dto.UserMe` struct already serializes `*time.Time` fields via `omi
 
 ## Options
 
+`Generation:` single-pass — level 2 research, the donor pattern (`EmailVerifiedAt`) is obvious.
+
 | Option | Description | Trade-off |
 |---|---|---|
 | A. Add `LastLoginAt *time.Time` to `dto.UserMe` directly | Mirror the `EmailVerifiedAt` pattern. | Smallest diff; consistent with existing code. |

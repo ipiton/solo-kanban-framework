@@ -12,7 +12,7 @@ Solo Kanban solves this by making work state a repository artifact.
 
 ### One Focus
 
-Keep WIP at one primary task. A second slot is reserved for an urgent fix only. More parallel work creates stale context and ambiguous ownership.
+Keep WIP small and explicit. The default is one primary task plus one slot for an urgent fix. With worktrees and one agent session per task, a slightly higher limit (three is a common ceiling) can work — but raise it deliberately, write the number in the flow rules of `NEXT.md`, and keep it in that one place. More parallel work than you can review creates stale context and ambiguous ownership.
 
 ### Everything Important Is Versioned
 
@@ -34,6 +34,14 @@ For non-trivial changes, write the target design before implementation. The spec
 
 Do not rely on an agent saying work is done. Completion requires checks: tests, build, lint, documentation updates, planning updates, and explicit notes for skipped validation.
 
+### Gates On Seams, Not In Prose
+
+An instruction the agent is asked to follow is the weakest form of a rule. When a rule keeps getting broken, move it to a hook, a lint rule, or a check that refuses the action where it happens. A gate that cannot read its input must fail loudly instead of reporting "clean". See `docs/agent-policies.md` § Enforcement Hierarchy.
+
+### Premises Before Design
+
+Most expensive defects are not bugs in the code but wrong beliefs about reality: how the data is distributed, who else reads a structure, how often an event fires. The spec lists these as Design Premises, each with how it was confirmed — and an unchecked one is labeled `assumed`, not hidden.
+
 ### Archive Evidence
 
 When a task closes, keep its workspace in `tasks/archive/<slug>/`. Future agents can inspect the reasoning, scope, and validation without reconstructing the work from commits alone.
@@ -52,11 +60,19 @@ Solo Kanban uses small markdown files instead of a task tracker:
 | `DECISIONS.md` | Meaningful decisions with context and trade-offs. |
 | `ROADMAP.md` | Strategic direction and larger streams. |
 
+Three rules keep these files useful over time (details in `docs/artifact-contract.md`):
+
+- **Live state only.** A closed entry is deleted, not commented out. The account lives in `DONE.md`, the history in git.
+- **Monthly journals.** `DONE.md` and `DECISIONS.md` hold the current month; past months move to `archive/`. Anything that searches them reads the archives too.
+- **Owner inbox.** What waits for the owner's hands is marked with `Blocked-by:`, `Waiting-on:`, or `Trigger:` in its source entry and collected by a grep, not copied into a separate list.
+
 ## Bug Versus Tech Debt
 
-A bug means the system violates its contract: incorrect behavior, failing tests, permission leaks, broken builds, or missing required behavior.
+A bug means the system violates its contract: incorrect behavior, failing tests, permission leaks, broken builds, or missing required behavior. A security gap is a bug even if nobody exploited it.
 
 Tech debt means the system works, but the implementation creates maintainability risk: duplication, missing tests for working code, weak observability, large files, unclear ownership, or fragile abstractions.
+
+Several small debt entries in one subsystem can be grouped into a **bundle** and closed in one pipeline pass.
 
 ## When To Use Less Process
 

@@ -32,6 +32,10 @@ updated_at: <YYYY-MM-DD>
 
 ## 3) Options
 
+`Generation:` <single-pass | parallel (minimal-diff, reuse-first, reversibility)>
+<!-- If parallel and the lenses converged, record it as a fact: "N/M lenses converged on X".
+     Convergence is an observation, not a confirmation of the choice. -->
+
 ### Option A - <name>
 
 - **Pros:** <benefits>

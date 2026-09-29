@@ -21,9 +21,11 @@ Run the strongest practical checks for the active task.
 3. Run targeted checks first if full checks are expensive.
 4. Run full project checks when risk or repository policy requires it.
 5. Record failed checks and fixes.
-6. Create or update `tasks/<slug>/review-findings.md` for non-blocking findings.
+6. Confirm or refute behavioral findings that `deep-review` deferred to testing; record the outcome in `tasks/<slug>/review-findings.md`.
 7. Mark skipped checks with explicit reasons.
 
 ## Output
 
-Report pass/fail per check, fixes applied, skipped checks, and whether `deep-review` is needed.
+Report pass/fail per check, fixes applied, skipped checks, and the next command (`deploy` when the `R` signal requires it, otherwise `finalize`).
+
+If a gate fails twice in a row, stop and diagnose instead of retrying — see `docs/agent-policies.md` § Retry Policy.
